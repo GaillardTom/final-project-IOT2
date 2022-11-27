@@ -41,21 +41,41 @@ def readSensorForTemperature(id):
 
     return temperature  # return the temperature
 
+
+
+
+"""
+  
+    
+    This function will turn the buzzer on for 0.5 seconds, then off for 0.5 seconds, and repeat this
+    process for the number of times specified by the timeIterate parameter
+    
+    :param timeIterate: How many times the buzzer will beep, defaults to 1 (optional)
+"""
 def Buzz(timeIterate=1):
+
     for i in range(timeIterate):
         gpio.output(BUZZER, gpio.HIGH)
         time.sleep(0.5)
         gpio.output(BUZZER, gpio.LOW)
         time.sleep(0.5)
     
+
+"""
+    It turns on the LED for half a second, then turns it off for half a second, and repeats this process
+    for the number of times specified by the timeIterate parameter
+    
+    :param timeIterate: How many times the LED will blink, defaults to 1 (optional)
+"""
 def LightLED(timeIterate=1): 
+    
     for i in range(timeIterate):
         gpio.output(LED, gpio.HIGH)
         time.sleep(0.5)
         gpio.output(LED, gpio.LOW)
         time.sleep(0.5)
 
-        
+
 def Temperature():
     """
     It reads the temperature from the sensor and returns the temperature.
@@ -95,7 +115,10 @@ def getGasStatus():
     return res
 
 
-def setup(): 
+"""
+    It sets up the GPIO pins for the LED and the Buzzer.
+"""
+def setup():    
     gpio.setmode(gpio.BCM)
     gpio.setup(BUZZER, gpio.OUT)
     gpio.setup(LED, gpio.OUT)
@@ -105,6 +128,9 @@ def setup():
 
 
 def testUsersNotif(): 
+    """
+    Test the users actuators on his pi (led and buzzer)
+    """
     gpio.output(BUZZER, gpio.HIGH)
     gpio.output(LED, gpio.HIGH)
     time.sleep(1)

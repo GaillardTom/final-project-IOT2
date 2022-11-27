@@ -11,6 +11,10 @@ def sendMail():
     print(f"sending mail to user {userEmail} ...")
 
 def main():
+    """
+    It checks the status of the sensors and if any of them are out of range, it sends an email and
+    activates the buzzer and LED
+    """
     while True:
         #sensors.testUsersNotif()
         lightStatus = sensors.getLightStatus()

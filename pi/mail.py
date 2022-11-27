@@ -4,6 +4,16 @@ import config
 
 context = ssl.create_default_context()
 
+
+
+
+"""
+    It takes a message body, a recipient, and a sender, and sends an email.
+    
+    :param messageBody: The body of the email message
+    :param to: the email address to send the message to
+    :param messageSender: the email address of the sender
+"""
 def sendEmail(
     messageBody,
     to = config.CLIENT_EMAIL,
