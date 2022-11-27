@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 #-----------------------------------------------------
 #
 #		This is a program for all ADC Module. It 

@@ -6,6 +6,12 @@ import ADC0832_tmp as adc
 
 # Code for the sensors used in the rasperry pi 
 
+#Declaring constants 
+
+BUZZER = 21
+LED = 20
+
+
 def readSensorForTemperature(id):
     """
     It opens the sensor file, reads the text file, closes the file, gets the second line of the file,
@@ -35,7 +41,21 @@ def readSensorForTemperature(id):
 
     return temperature  # return the temperature
 
+def Buzz(timeIterate=1):
+    for i in range(timeIterate):
+        gpio.output(BUZZER, gpio.HIGH)
+        time.sleep(0.5)
+        gpio.output(BUZZER, gpio.LOW)
+        time.sleep(0.5)
+    
+def LightLED(timeIterate=1): 
+    for i in range(timeIterate):
+        gpio.output(LED, gpio.HIGH)
+        time.sleep(0.5)
+        gpio.output(LED, gpio.LOW)
+        time.sleep(0.5)
 
+        
 def Temperature():
     """
     It reads the temperature from the sensor and returns the temperature.
@@ -58,6 +78,9 @@ def Temperature():
             return False  # Display that there is no sensor found
     except KeyboardInterrupt:
         destroy()
+
+
+
 def getLightStatus(): 
     res = adc.getResult(0)
     vol = 3.3/255*res
@@ -74,7 +97,20 @@ def getGasStatus():
 
 def setup(): 
     gpio.setmode(gpio.BCM)
+    gpio.setup(BUZZER, gpio.OUT)
+    gpio.setup(LED, gpio.OUT)
     adc.setup()
+    gpio.output(BUZZER, gpio.LOW)
+    gpio.output(LED, gpio.LOW)
+
+
+def testUsersNotif(): 
+    gpio.output(BUZZER, gpio.HIGH)
+    gpio.output(LED, gpio.HIGH)
+    time.sleep(1)
+    gpio.output(BUZZER, gpio.LOW)
+    gpio.output(LED, gpio.LOW)
+
 
 def main(): 
     setup() 
