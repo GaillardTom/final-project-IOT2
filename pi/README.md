@@ -10,3 +10,8 @@ Sensors used:
 - LED 
 - Buzzer
 
+Configuration: 
+
+- Enter your thresholds limit for your sensors
+- Enter your desired topic name 
+

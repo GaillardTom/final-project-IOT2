@@ -2,7 +2,8 @@ import RPi.GPIO as gpio
 import time 
 import os 
 import ADC0832_tmp as adc
-
+from config import MQTT_CLIENT_ID, MQTT_PASSWORD, MQTT_USERNAME 
+import cayenne.client as cayenne
 
 # Code for the sensors used in the rasperry pi 
 
@@ -10,7 +11,14 @@ import ADC0832_tmp as adc
 
 BUZZER = 21
 LED = 20
+CLIENT_CAYENNE = cayenne.CayenneMQTTClient()
+print(CLIENT_CAYENNE)
 
+def on_cayenne_message(message): 
+    print("Cayenne message received: " + str(message))
+
+def on_cayenne_connect(message): 
+    print("Cayenne Connected: " + message)
 
 def readSensorForTemperature(id):
     """
@@ -105,6 +113,8 @@ def getLightStatus():
     res = adc.getResult(0)
     vol = 3.3/255*res
     print(f"res light: {res}")
+    CLIENT_CAYENNE.virtualWrite(21, res, "analog_sensor", "null")
+    print("sending to cayenne...")
     return res
 
 
@@ -112,6 +122,8 @@ def getGasStatus():
     res = adc.getResult1()
     vol = 3.3/255*res
     print(f"res gas: {res}")
+    CLIENT_CAYENNE.virtualWrite(22, res, "analog_sensor", "null")
+    print("sending to cayenne...")
     return res
 
 
@@ -125,6 +137,9 @@ def setup():
     adc.setup()
     gpio.output(BUZZER, gpio.LOW)
     gpio.output(LED, gpio.LOW)
+    CLIENT_CAYENNE.on_message = on_cayenne_message
+    CLIENT_CAYENNE.on_connect = on_cayenne_connect
+    CLIENT_CAYENNE.begin(MQTT_USERNAME, MQTT_PASSWORD, MQTT_CLIENT_ID)
 
 
 def testUsersNotif(): 
@@ -154,7 +169,7 @@ def main():
 def destroy(): 
     adc.destroy()
     gpio.cleanup()
-    
+    CLIENT_CAYENNE.disconnect()
 
 if __name__ == '__main__':
     try:

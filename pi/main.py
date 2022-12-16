@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 from AWSIoTPythonSDK.MQTTLib import AWSIoTMQTTClient as mqtt 
 import time
 import sensors
@@ -71,7 +72,7 @@ def main():
         lightStatus = float(sensors.getLightStatus())
         gasStatus = float(sensors.getGasStatus())
         temp = float(sensors.Temperature())
-        if(temp >= 30 or temp <= 15 or gasStatus >= 100 or lightStatus <= 45):
+        if(temp >= config.TEMP_LIMIT_MAX or temp <= config.TEMP_LIMIT_MIN or gasStatus >= config.GAS_LIMIT or lightStatus <= config.LIGHT_LIMIT):
             mail.sendEmail(f"temp: {temp} degrees, gas: {gasStatus}, light: {lightStatus}")
             sensors.Buzz(5)
             sensors.LightLED(5)
